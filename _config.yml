@@ -9,23 +9,24 @@ plugins:
   - jekyll-remote-theme
   - jekyll-paginate
 
-navigation:
-  - title: 首页
-    url: /
-  - title: 编程语言
-    url: /categories/programming-languages/
-  - title: 自动驾驶
-    url: /categories/autonomous-driving/
-  - title: 杂项
-    url: /categories/miscellaneous/
-  - title: 关于
-    url: /about/
+# ———导航：默认隐藏所有页面———————————————
+defaults:
+  # ① 所有普通页面一律 nav_exclude: true
+  - scope:
+      path: ""            # 根目录下的所有文件
+      type: "pages"
+    values:
+      nav_exclude: true
 
-# 其他保持不变
-collections:
-  notes:
-    output: true
-    permalink: /notes/:path/
+# ———可选：关闭自动生成的深层文件索引（建议保留搜索）———
+# just_the_docs:
+#   collections:
+#     pages:
+#       output: true
+#       sidebar:
+#         nav_exclude: true  # 0.5.0+ 新选项，只在最新版主题有效
 
-paginate: 5
-paginate_path: "/page/:num/"
+# ———其它常规建议—————————
+permalink: pretty          # 去掉 .html
+paginate: 10               # 列表页每页 10 篇（若需要）
+exclude: [Gemfile*, node_modules, vendor]
