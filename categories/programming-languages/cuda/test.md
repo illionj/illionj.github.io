@@ -1,8 +1,4 @@
----
-layout: default
-title: "CUDA 笔记"
-permalink: /categories/programming-languages/cuda/
----
+
 
 # CUDA 相关文章
 
