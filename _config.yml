@@ -1,14 +1,16 @@
-# 基础配置
+# 站点基础配置
 title: "笔记"
 description: "自用笔记"
-baseurl: ""           # 如果是 user.github.io 填空
-url: "https://illionj.github.io/"
+baseurl: ""                # user.github.io 时留空
+url: "https://illionj.github.io"
 
+# Remote theme 配置（Just the Docs）
+remote_theme: "pmarsceill/just-the-docs"
+plugins:
+  - jekyll-remote-theme
 
-
-theme: minima           # GitHub Pages 默认内置主题之一
-
-nav:
+# 导航栏
+navigation:
   - title: 首页
     url: /
   - title: 笔记
@@ -16,11 +18,14 @@ nav:
   - title: 关于
     url: /about/
 
+# 自定义集合：notes
 collections:
   notes:
     output: true
     permalink: /notes/:path/
 
-  
-paginate: 5        # 每页显示 5 篇
-paginate_path: "/page:num/"
+# 分页（Just the Docs 支持 jekyll-paginate）
+plugins:
+  - jekyll-paginate
+paginate: 5
+paginate_path: "/page/:num/"
