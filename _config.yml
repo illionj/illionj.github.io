@@ -12,36 +12,20 @@ plugins:
 navigation:
   - title: 首页
     url: /
-  - title: 笔记
-    items:
-      - title: 所有笔记
-        url: /notes/
-  - title: 分类
-    items:
-      - title: 编程语言
-        url: /categories/programming-languages/
-        items:
-          - title: CUDA
-            url: /categories/programming-languages/cuda/
-          - title: C++
-            url: /categories/programming-languages/cpp/
-          - title: Python
-            url: /categories/programming-languages/python/
-      - title: 自动驾驶
-        url: /categories/autonomous-driving/
-        items:
-          - title: 规划
-            url: /categories/autonomous-driving/planning/
-          - title: 控制
-            url: /categories/autonomous-driving/control/
-      - title: 杂项
-        url: /categories/miscellaneous/
-        items:
-          - title: 草稿
-            url: /categories/miscellaneous/draft/
-          - title: 其他
-            url: /categories/miscellaneous/other/
+  - title: 编程语言
+    url: /categories/programming-languages/
+  - title: 自动驾驶
+    url: /categories/autonomous-driving/
+  - title: 杂项
+    url: /categories/miscellaneous/
   - title: 关于
     url: /about/
+
+# 其他保持不变
+collections:
+  notes:
+    output: true
+    permalink: /notes/:path/
+
 paginate: 5
 paginate_path: "/page/:num/"

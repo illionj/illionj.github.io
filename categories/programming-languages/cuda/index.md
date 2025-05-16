@@ -1,12 +1,12 @@
 ---
 layout: default
-title: "编程语言"
-permalink: /categories/programming-languages/
+title: "CUDA 笔记"                          # 这里改成子分类的名称
+permalink: /categories/programming-languages/cuda/
 ---
 
-# 编程语言
+# CUDA 笔记
 
-下面自动列出本目录及所有子目录下的笔记与子分类链接：
+下面自动列出本子分类目录下的所有笔记（不包含本页面）：
 
 <ul>
   {%- assign items = site.pages
