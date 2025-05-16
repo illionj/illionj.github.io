@@ -1,3 +1,24 @@
-remote_theme: pages-themes/hacker@v0.2.0
+# 基础配置
+title: "笔记"
+description: "自用笔记"
+baseurl: ""           # 如果是 user.github.io 填空
+url: "https://illionj.github.io/"
+
+# 主题设置
+theme: minimal-mistakes-jekyll
+
 plugins:
-- jekyll-remote-theme # add this line to the plugins list if you already have one
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Minimal Mistakes 专属配置
+# 文档：https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
+minimal_mistakes_skin: "dark"   # 皮肤：default / dark / lite 等
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "single"         # 帖子使用单列布局
