@@ -9,23 +9,44 @@ remote_theme: "pmarsceill/just-the-docs"
 plugins:
   - jekyll-remote-theme
 
-# 导航栏
 navigation:
   - title: 首页
     url: /
   - title: 笔记
     url: /notes/
+  - title: 分类
+    items:
+      - title: 编程语言
+        url: /categories/programming-languages/
+        items:
+          - title: CUDA
+            url: /categories/programming-languages/cuda/
+          - title: C++
+            url: /categories/programming-languages/cpp/
+          - title: Python
+            url: /categories/programming-languages/python/
+      - title: 自动驾驶
+        url: /categories/autonomous-driving/
+        items:
+          - title: 规划
+            url: /categories/autonomous-driving/planning/
+          - title: 控制
+            url: /categories/autonomous-driving/control/
+      - title: 杂项
+        url: /categories/miscellaneous/
+        items:
+          - title: 草稿
+            url: /categories/miscellaneous/draft/
+          - title: 其他
+            url: /categories/miscellaneous/other/
   - title: 关于
     url: /about/
 
-# 自定义集合：notes
+# 如果还想保留 notes 集合
 collections:
   notes:
     output: true
     permalink: /notes/:path/
 
-# 分页（Just the Docs 支持 jekyll-paginate）
-plugins:
-  - jekyll-paginate
 paginate: 5
 paginate_path: "/page/:num/"
