@@ -4,10 +4,11 @@ description: "自用笔记"
 baseurl: ""           # 如果是 user.github.io 填空
 url: "https://illionj.github.io/"
 
-# 主题设置
-theme: minimal-mistakes-jekyll
+
+remote_theme: "mmistakes/minimal-mistakes@4.24.0"
 
 plugins:
+  - jekyll-remote-theme  # <= 让 Pages 去拉这个 remote theme
   - jekyll-feed
   - jekyll-seo-tag
   - jekyll-sitemap
