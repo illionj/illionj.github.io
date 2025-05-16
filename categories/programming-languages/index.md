@@ -14,10 +14,10 @@ description: "汇总 C/C++、CUDA、Python 等语言及工具链的学习笔记"
 
 ---
 
-## 📂 子分类入口
+<!-- ## 📂 子分类入口
 - [C++](/categories/programming-languages/cpp/)
 - [CUDA](/categories/programming-languages/cuda/)
-- [Python](/categories/programming-languages/python/)
+- [Python](/categories/programming-languages/python/) -->
 
 ---
 
@@ -25,9 +25,11 @@ description: "汇总 C/C++、CUDA、Python 等语言及工具链的学习笔记"
 <ul>
   {%- assign base = page.path | remove: 'index.md' -%}
   {%- assign recent = site.pages
-        | where_exp:"p","p.path != page.path"
-        | where_exp:"p","p.path contains base"
-        | sort:"date" | reverse | slice: 0, 5 %}
+        | where_exp:"p","p.path != page.path"        # 排除当前页
+        | where_exp:"p","p.path contains base"       # 只要编程语言栏目的文章
+        | where_exp:"p","p.name != 'index.md'"       # 关键：排除任何 index.md
+        | sort: "date" | reverse | slice: 0, 5       # 最新 5 条
+  -%}
   {%- if recent.size > 0 -%}
     {%- for p in recent -%}
       <li>{{ p.date | date: "%Y-%m-%d" }} — <a href="{{ p.url | relative_url }}">{{ p.title }}</a></li>
@@ -36,4 +38,5 @@ description: "汇总 C/C++、CUDA、Python 等语言及工具链的学习笔记"
     <li>尚无文章，敬请期待。</li>
   {%- endif -%}
 </ul>
+
 
