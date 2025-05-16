@@ -4,16 +4,18 @@ description: "自用笔记"
 baseurl: ""                # user.github.io 时留空
 url: "https://illionj.github.io"
 
-# Remote theme 配置（Just the Docs）
 remote_theme: "pmarsceill/just-the-docs"
 plugins:
   - jekyll-remote-theme
+  - jekyll-paginate
 
 navigation:
   - title: 首页
     url: /
   - title: 笔记
-    url: /notes/
+    items:
+      - title: 所有笔记
+        url: /notes/
   - title: 分类
     items:
       - title: 编程语言
@@ -41,12 +43,5 @@ navigation:
             url: /categories/miscellaneous/other/
   - title: 关于
     url: /about/
-
-# 如果还想保留 notes 集合
-collections:
-  notes:
-    output: true
-    permalink: /notes/:path/
-
 paginate: 5
 paginate_path: "/page/:num/"
