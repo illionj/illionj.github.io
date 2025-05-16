@@ -12,14 +12,14 @@ description: "汇总 C/C++、CUDA、Python 等语言及工具链的学习笔记"
 这里记录我在 **C/C++、CUDA、Python** 及相关工具链上的学习与实践。  
 左侧导航将在本页下自动展开三个子分类（C++ / CUDA / Python）。
 
----
+<!-- --- -->
 
 <!-- ## 📂 子分类入口
 - [C++](/categories/programming-languages/cpp/)
 - [CUDA](/categories/programming-languages/cuda/)
 - [Python](/categories/programming-languages/python/) -->
 
----
+<!-- --- -->
 
 ## 📝 最近更新（编程语言栏目内）
 <ul>

@@ -1,10 +1,10 @@
 ---
 title: cpp
 parent: 编程语言
-nav_order: 2
+nav_order: 1
 nav_exclude: false
 has_children: true                     # 若 CUDA 下还想分 Stream / Kernel / Opt
-permalink: /categories/programming-languages/cuda/
+permalink: /categories/programming-languages/cpp/
 description: "GPU 并行编程、内存模型与优化实践"
 ---
 
