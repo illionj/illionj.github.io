@@ -7,3 +7,20 @@ url: "https://illionj.github.io/"
 
 
 theme: minima           # GitHub Pages 默认内置主题之一
+
+nav:
+  - title: 首页
+    url: /
+  - title: 笔记
+    url: /notes/
+  - title: 关于
+    url: /about/
+
+collections:
+  notes:
+    output: true
+    permalink: /notes/:path/
+
+  
+paginate: 5        # 每页显示 5 篇
+paginate_path: "/page:num/"
