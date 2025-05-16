@@ -5,21 +5,5 @@ baseurl: ""           # 如果是 user.github.io 填空
 url: "https://illionj.github.io/"
 
 
-remote_theme: "mmistakes/minimal-mistakes@4.24.0"
 
-plugins:
-  - jekyll-remote-theme  # <= 让 Pages 去拉这个 remote theme
-  - jekyll-feed
-  - jekyll-seo-tag
-  - jekyll-sitemap
-
-# Minimal Mistakes 专属配置
-# 文档：https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
-minimal_mistakes_skin: "dark"   # 皮肤：default / dark / lite 等
-defaults:
-  -
-    scope:
-      path: ""
-      type: "posts"
-    values:
-      layout: "single"         # 帖子使用单列布局
+theme: minima           # GitHub Pages 默认内置主题之一
