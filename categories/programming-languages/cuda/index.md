@@ -1,25 +1,26 @@
 ---
 layout: default
-title: "CUDA 笔记"                          # 这里改成子分类的名称
+title: "CUDA 笔记"
 permalink: /categories/programming-languages/cuda/
 ---
 
 # CUDA 笔记
 
-下面自动列出本子分类目录下的所有笔记（不包含本页面）：
+下面自动列出本目录下所有的 Markdown 笔记（不含自己）：
 
 <ul>
-  {%- assign items = site.pages
-       | where_exp: "p", "p.url != page.url and p.url contains page.url"
-       | sort: "p.title"
-  -%}
-  {%- for p in items -%}
-    <li>
-      <a href="{{ p.url | relative_url }}">{{ p.title }}</a>
-      {%- if p.date -%}
-        <small>（{{ p.date | date: "%Y-%m-%d" }}）</small>
-      {%- endif -%}
-    </li>
-  {%- endfor -%}
+{%- assign items = site.pages 
+     | where_exp: "p", "p.path contains 'categories/programming-languages/cuda/'" 
+     | reject: "path", "categories/programming-languages/cuda/index.md"
+     | sort: "path" -%}
+{%- for p in items -%}
+  <li>
+    <a href="{{ p.url | relative_url }}">{{ p.title }}</a>
+    {%- if p.date -%}
+      <small>（{{ p.date | date: "%Y-%m-%d" }}）</small>
+    {%- endif -%}
+  </li>
+{%- endfor -%}
 </ul>
+
 
