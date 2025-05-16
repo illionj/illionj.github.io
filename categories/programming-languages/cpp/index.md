@@ -1,5 +1,5 @@
 ---
-title: cpp
+title: CPP
 parent: 编程语言
 nav_order: 1
 nav_exclude: false
