@@ -16,7 +16,7 @@ defaults:
       path: ""            # 根目录下的所有文件
       type: "pages"
     values:
-      nav_exclude: true
+      nav_exclude: false
 
 # ———可选：关闭自动生成的深层文件索引（建议保留搜索）———
 # just_the_docs:
