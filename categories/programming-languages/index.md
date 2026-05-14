@@ -1,42 +1,52 @@
 ---
-title: 编程语言                     # 顶级栏目名称
-nav_order: 2                        # 在 5 个一级入口中的排序
-nav_exclude: false                  # 显式加入侧边导航
-has_children: true                  # 告诉 Just the Docs 还有下一层
+title: 编程语言
+nav_order: 2
+nav_exclude: false
+has_children: true
+has_toc: false
 permalink: /categories/programming-languages/
 description: "汇总 C/C++、CUDA、Python 等语言及工具链的学习笔记"
 ---
 
-# 编程语言
+<div class="page-intro">
+  <p class="page-eyebrow">栏目</p>
+  <h1>编程语言</h1>
+  <p>用于记录 C++、CUDA 等语言与相关工具链的学习笔记、实验记录和问题排查。</p>
+</div>
 
-这111里记录我在 **C/C++、CUDA、Python** 及相关工具链上的学习与实践。  
-左侧导航将在本页下自动展开三个子分类（C++ / CUDA / Python）。
+<section class="page-section">
+  <h2>子栏目</h2>
+  <ul class="catalog-list">
+    {%- assign sections = site.pages | where: "parent", page.title | sort: "nav_order" -%}
+    {%- if sections.size > 0 -%}
+      {%- for item in sections -%}
+        <li>
+          <a class="catalog-link" href="{{ item.url | relative_url }}">{{ item.title }}</a>
+          {%- if item.description -%}
+            <p class="catalog-meta">{{ item.description }}</p>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    {%- else -%}
+      <li class="catalog-empty">尚无可展示的子栏目。</li>
+    {%- endif -%}
+  </ul>
+</section>
 
-<!-- --- -->
-
-<!-- ## 📂 子分类入口
-- [C++](/categories/programming-languages/cpp/)
-- [CUDA](/categories/programming-languages/cuda/)
-- [Python](/categories/programming-languages/python/) -->
-
-<!-- --- -->
-
-## 📝 最近更新（编程语言栏目内）
-<ul>
+<section class="page-section">
+  <h2>最近更新</h2>
+  <ul class="note-list">
   {%- assign base = page.path | remove: 'index.md' -%}
   {%- assign recent = site.pages
-        | where_exp:"p","p.path != page.path"        # 排除当前页
-        | where_exp:"p","p.path contains base"       # 只要编程语言栏目的文章
-        | where_exp:"p","p.name != 'index.md'"       # 关键：排除任何 index.md
-        | sort: "date" | reverse | slice: 0, 5       # 最新 5 条
+        | where_exp:"p","p.path != page.path"
+        | where_exp:"p","p.path contains base"
+        | where_exp:"p","p.name != 'index.md'"
+        | where_exp:"p","p.date != nil"
   -%}
   {%- if recent.size > 0 -%}
-    {%- for p in recent -%}
-      <li>{{ p.date | date: "%Y-%m-%d" }} — <a href="{{ p.url | relative_url }}">{{ p.title }}</a></li>
-    {%- endfor -%}
+    {%- include note_list_items.html notes=recent limit=5 -%}
   {%- else -%}
-    <li>尚无文章，敬请期待。</li>
+    <li class="catalog-empty">尚无文章。</li>
   {%- endif -%}
 </ul>
-
-
+</section>

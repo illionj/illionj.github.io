@@ -1,13 +1,13 @@
 # 站点基础配置
 title: "笔记"
-description: "自用笔记"
+description: "技术笔记与学习记录"
 baseurl: ""                # user.github.io 时留空
 url: "https://illionj.github.io"
+lang: "zh-CN"
 
 remote_theme: just-the-docs/just-the-docs
 plugins:
   - jekyll-remote-theme
-  - jekyll-paginate
 
 # ———导航：默认隐藏所有页面———————————————
 defaults:
@@ -26,7 +26,12 @@ defaults:
 #       sidebar:
 #         nav_exclude: true  # 0.5.0+ 新选项，只在最新版主题有效
 
+search_enabled: true
+heading_anchors: true
+
+mermaid:
+  version: "10.9.1"
+
 # ———其它常规建议—————————
 permalink: pretty          # 去掉 .html
-paginate: 10               # 列表页每页 10 篇（若需要）
 exclude: [Gemfile*, node_modules, vendor]

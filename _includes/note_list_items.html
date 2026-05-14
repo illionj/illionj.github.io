@@ -1,0 +1,31 @@
+{%- assign note_entries = "" -%}
+{%- for note in include.notes -%}
+  {%- assign updated_at = note.updated | default: note.date -%}
+  {%- if updated_at -%}
+    {%- assign updated_key = updated_at | date: "%Y-%m-%d" -%}
+    {%- assign note_entries = note_entries
+      | append: updated_key
+      | append: ":::"
+      | append: note.path
+      | append: "|||"
+    -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign sorted_note_entries = note_entries | split: "|||" | sort | reverse -%}
+{%- assign render_limit = include.limit | default: sorted_note_entries.size -%}
+{%- assign rendered_count = 0 -%}
+{%- for entry in sorted_note_entries -%}
+  {%- if entry == "" -%}
+    {%- continue -%}
+  {%- endif -%}
+  {%- if rendered_count >= render_limit -%}
+    {%- break -%}
+  {%- endif -%}
+  {%- assign entry_parts = entry | split: ":::" -%}
+  {%- assign note_path = entry_parts[1] -%}
+  {%- assign note = include.notes | where: "path", note_path | first -%}
+  {%- if note -%}
+    {%- include note_item.html note=note -%}
+    {%- assign rendered_count = rendered_count | plus: 1 -%}
+  {%- endif -%}
+{%- endfor -%}
