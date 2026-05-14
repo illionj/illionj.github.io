@@ -31,6 +31,7 @@ PORT=4001 ./scripts/serve-local.sh
 
 ## 前提
 
-- 本机安装了 Docker
+- 本机安装了 Docker 
 - 第一次启动会拉基础镜像、构建本地镜像并安装 gems，会慢一些
 - 依赖会缓存到 `vendor/bundle/`，后续启动会快很多
+git commit --allow-empty -m "trigger pages rebuild"
