@@ -5,17 +5,33 @@ nav_exclude: false
 ---
 
 <div class="page-intro">
-  <p class="page-eyebrow">技术笔记</p>
-  <h1>首页</h1>
-  <p>本站用于整理编程语言与相关计算主题的学习记录。内容按主题归档，优先保证结构清晰、检索方便与长期维护。</p>
+  <h3>我想说的</h3>
+  <p>人的注意力在当下环境非常稀缺<br>
+  如果别人投入的注意力进来,我不希望别人看到的是AI信息倾泻<br>
+  </p>
 </div>
 
 <section class="page-section">
-  <h2>栏目</h2>
   <ul class="catalog-list">
     <li>
-      <a class="catalog-link" href="{{ '/categories/programming-languages/' | relative_url }}">编程语言</a>
-      <p class="catalog-meta">C++、CUDA 与相关工具链。</p>
+      <a class="catalog-link" href="{{ '/categories/heterogeneous-computing/' | relative_url }}">异构计算</a>
+      <p class="catalog-meta">记录一些cuda学习经验,基本就是pmpp和cuda program guide笔记</p>
+    </li>
+    <li>
+      <a class="catalog-link" href="{{ '/categories/computer-architecture/' | relative_url }}">计算机架构</a>
+      <p class="catalog-meta">基本就是csapp的笔记</p>
+    </li>
+    <li>
+      <a class="catalog-link" href="{{ '/categories/tools/' | relative_url }}">工具命令</a>
+      <p class="catalog-meta">git,vscode,vim,linux命令,sh等等</p>
+    </li>
+    <li>
+      <a class="catalog-link" href="{{ '/categories/language-lawyer/' | relative_url }}">语法律师</a>
+      <p class="catalog-meta">"你写过TM的cpp吗?你个XX滚出去"--嘎子</p>
+    </li>
+    <li>
+      <a class="catalog-link" href="{{ '/categories/linear-algebra/' | relative_url }}">线性代数</a>
+      <p class="catalog-meta">感谢Gilbert Strang教授</p>
     </li>
     <li>
       <a class="catalog-link" href="{{ '/notes/' | relative_url }}">所有笔记</a>
@@ -25,7 +41,7 @@ nav_exclude: false
 </section>
 
 <section class="page-section">
-  <h2>最近更新</h2>
+  <h3>最近更新</h3>
   <ul class="note-list">
     {%- assign recent = site.pages
           | where_exp: "p", "p.url != page.url"

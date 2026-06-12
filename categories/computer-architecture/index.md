@@ -1,16 +1,15 @@
 ---
-title: C++
-parent: 编程语言
-nav_order: 1
+title: 计算机架构
+nav_order: 4
 nav_exclude: false
-has_children: true
-permalink: /categories/programming-languages/cpp/
-description: "C++ 语言基础、标准库与工程实践"
+has_children: false
+permalink: /categories/computer-architecture/
+description: "基本就是 CSAPP 的笔记"
 ---
 
 <div class="page-intro">
-  <h1>C++</h1>
-  <p>集中整理 C++ 语言基础、标准库、工程实践与相关问题记录。</p>
+  <h1>计算机架构</h1>
+  <p>记录计算机系统、处理器架构、内存层次等 CSAPP 相关学习笔记。</p>
 </div>
 
 <section class="page-section">

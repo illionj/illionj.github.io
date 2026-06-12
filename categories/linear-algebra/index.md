@@ -1,16 +1,15 @@
 ---
-title: C++
-parent: 编程语言
-nav_order: 1
+title: 线性代数
+nav_order: 7
 nav_exclude: false
-has_children: true
-permalink: /categories/programming-languages/cpp/
-description: "C++ 语言基础、标准库与工程实践"
+has_children: false
+permalink: /categories/linear-algebra/
+description: "感谢 Gilbert Strang 教授"
 ---
 
 <div class="page-intro">
-  <h1>C++</h1>
-  <p>集中整理 C++ 语言基础、标准库、工程实践与相关问题记录。</p>
+  <h1>线性代数</h1>
+  <p>记录 Gilbert Strang 教授线性代数课程的学习笔记与理解。</p>
 </div>
 
 <section class="page-section">

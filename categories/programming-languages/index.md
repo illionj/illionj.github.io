@@ -9,7 +9,6 @@ description: "汇总 C/C++、CUDA、Python 等语言及工具链的学习笔记"
 ---
 
 <div class="page-intro">
-  <p class="page-eyebrow">栏目</p>
   <h1>编程语言</h1>
   <p>用于记录 C++、CUDA 等语言与相关工具链的学习笔记、实验记录和问题排查。</p>
 </div>

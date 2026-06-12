@@ -1,16 +1,15 @@
 ---
-title: C++
-parent: 编程语言
-nav_order: 1
+title: 工具命令
+nav_order: 5
 nav_exclude: false
-has_children: true
-permalink: /categories/programming-languages/cpp/
-description: "C++ 语言基础、标准库与工程实践"
+has_children: false
+permalink: /categories/tools/
+description: "git, vscode, vim, linux 命令, shell 等等"
 ---
 
 <div class="page-intro">
-  <h1>C++</h1>
-  <p>集中整理 C++ 语言基础、标准库、工程实践与相关问题记录。</p>
+  <h1>工具命令</h1>
+  <p>记录日常开发工具的使用技巧、命令备忘与配置经验。</p>
 </div>
 
 <section class="page-section">

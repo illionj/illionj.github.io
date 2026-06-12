@@ -1,16 +1,15 @@
 ---
-title: C++
-parent: 编程语言
-nav_order: 1
+title: 语法律师
+nav_order: 6
 nav_exclude: false
-has_children: true
-permalink: /categories/programming-languages/cpp/
-description: "C++ 语言基础、标准库与工程实践"
+has_children: false
+permalink: /categories/language-lawyer/
+description: "C++ 语法细节、陷阱与最佳实践 — language lawyer"
 ---
 
 <div class="page-intro">
-  <h1>C++</h1>
-  <p>集中整理 C++ 语言基础、标准库、工程实践与相关问题记录。</p>
+  <h1>语法律师</h1>
+  <p>记录 C++ 语法细节、常见陷阱、编译错误排查与最佳实践。</p>
 </div>
 
 <section class="page-section">

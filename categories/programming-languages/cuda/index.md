@@ -9,7 +9,6 @@ description: "GPU 并行编程、内存模型与优化实践"
 ---
 
 <div class="page-intro">
-  <p class="page-eyebrow">子栏目</p>
   <h1>CUDA</h1>
   <p>集中整理 GPU 并行编程、内存模型、性能调优与主机设备协同相关内容。</p>
 </div>

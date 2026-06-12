@@ -1,16 +1,15 @@
 ---
-title: C++
-parent: 编程语言
-nav_order: 1
+title: 异构计算
+nav_order: 3
 nav_exclude: false
-has_children: true
-permalink: /categories/programming-languages/cpp/
-description: "C++ 语言基础、标准库与工程实践"
+has_children: false
+permalink: /categories/heterogeneous-computing/
+description: "记录一些 CUDA 学习经验，基本就是 PMPP 和 CUDA Program Guide 笔记"
 ---
 
 <div class="page-intro">
-  <h1>C++</h1>
-  <p>集中整理 C++ 语言基础、标准库、工程实践与相关问题记录。</p>
+  <h1>异构计算</h1>
+  <p>记录 GPU 并行编程、CUDA、内存模型与性能优化等学习笔记。</p>
 </div>
 
 <section class="page-section">
