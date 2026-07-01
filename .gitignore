@@ -1,4 +1,13 @@
-# Jekyll build output and metadata
+# MkDocs build output
+site/
+.cache/
+
+# Python local environments and bytecode
+.venv/
+__pycache__/
+*.py[cod]
+
+# Legacy Jekyll local output and caches
 _site/
 .bundle/
 vendor/

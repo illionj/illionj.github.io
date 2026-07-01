@@ -1,4 +1,17 @@
-FROM jekyll/jekyll:pages
+FROM python:3.12-slim
 
-RUN sed -i 's#https://dl-cdn.alpinelinux.org#https://mirrors.cloud.tencent.com#g' /etc/apk/repositories \
-    && apk add --no-cache build-base
+ARG PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_INDEX_URL=${PIP_INDEX_URL}
+
+WORKDIR /site
+
+COPY requirements.txt /tmp/requirements.txt
+RUN python -m pip install --no-cache-dir -r /tmp/requirements.txt
+
+EXPOSE 8000
+
+CMD ["mkdocs", "serve", "--dev-addr", "0.0.0.0:8000"]

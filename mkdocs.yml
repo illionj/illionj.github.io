@@ -1,0 +1,85 @@
+site_name: 笔记
+site_description: 技术笔记与学习记录
+site_url: https://illionj.github.io/
+repo_url: https://github.com/illionj/illionj.github.io
+repo_name: illionj/illionj.github.io
+
+docs_dir: docs
+site_dir: site
+use_directory_urls: true
+
+theme:
+  name: material
+  language: zh
+  favicon: favicon.ico
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.indexes
+    - toc.follow
+    - search.highlight
+    - search.suggest
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: 切换到深色模式
+    - scheme: slate
+      primary: indigo
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到浅色模式
+
+nav:
+  - 首页: index.md
+  - 分类:
+      - 编程语言:
+          - 概览: categories/programming-languages/index.md
+          - C++:
+              - 概览: categories/programming-languages/cpp/index.md
+              - 3DGS 训练算法说明: categories/programming-languages/cpp/3DGS 训练算法说明.md
+              - autograd: categories/programming-languages/cpp/最终说明.md
+              - 这里写你的笔记标题: categories/programming-languages/cpp/test.md
+              - 这里写你的笔记标题1: categories/programming-languages/cpp/test1.md
+          - CUDA:
+              - 概览: categories/programming-languages/cuda/index.md
+              - 这里写你的笔记标题: categories/programming-languages/cuda/test.md
+      - 异构计算: categories/heterogeneous-computing/index.md
+      - 计算机架构: categories/computer-architecture/index.md
+      - 工具命令: categories/tools/index.md
+      - 语法律师: categories/language-lawyer/index.md
+      - 线性代数: categories/linear-algebra/index.md
+  - 所有笔记: notes/index.md
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_div_format
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js
+  - javascripts/mermaid.js

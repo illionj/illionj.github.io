@@ -1,61 +1,47 @@
-# Local Development
+# 笔记
 
-这个仓库是一个基于 Jekyll / GitHub Pages 的站点，推荐通过 Docker 在本地预览。
+这个仓库使用 [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) 构建技术笔记站点。
 
-## 启动
+## 本地预览
 
-在仓库根目录执行：
+直接使用 Python：
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+mkdocs serve
+```
+
+或者使用 Docker：
 
 ```bash
 ./scripts/serve-local.sh
 ```
 
-默认会使用：
-
-- 镜像：`illionj-jekyll-local`
-- 容器名：`illionj-jekyll-dev`
-- 端口：`4000`
-
 启动后访问：
 
 ```text
-http://127.0.0.1:4000
+http://127.0.0.1:8000
 ```
 
-第一次启动会自动构建本地镜像，并安装 Jekyll 依赖，因此会慢一些。后续依赖会复用 `vendor/bundle/` 缓存。
-
-## 停止
-
-执行：
+## 常用命令
 
 ```bash
+mkdocs build --strict
+mkdocs serve
+PORT=8001 ./scripts/serve-local.sh
+FORCE_BUILD=1 ./scripts/serve-local.sh
+PIP_INDEX_URL=https://pypi.org/simple FORCE_BUILD=1 ./scripts/serve-local.sh
 ./scripts/stop-local.sh
 ```
 
-它会关闭本地预览容器 `illionj-jekyll-dev`。
+## 内容结构
 
-## 常用方式
+- `mkdocs.yml`：站点配置、主题配置和导航。
+- `docs/`：发布内容目录。
+- `docs/categories/`：分类页和文章。
+- `docs/notes/`：笔记索引页。
+- `.github/workflows/deploy.yml`：推送到 `main` 后构建并发布到 GitHub Pages。
 
-更换端口：
-
-```bash
-PORT=4001 ./scripts/serve-local.sh
-```
-
-自定义容器名：
-
-```bash
-CONTAINER_NAME=my-jekyll ./scripts/serve-local.sh
-CONTAINER_NAME=my-jekyll ./scripts/stop-local.sh
-```
-
-## 修改源码后的行为
-
-普通页面、Markdown、分类页修改后，Jekyll 会自动重新生成；通常只需要刷新浏览器，不需要重新执行启动脚本。
-
-以下情况通常需要重新启动：
-
-- 修改 `Dockerfile`
-- 修改 `Gemfile`
-- 修改 `_config.yml`
-- 想切换端口或容器名
+GitHub Pages 需要在仓库设置中选择 `GitHub Actions` 作为发布来源。

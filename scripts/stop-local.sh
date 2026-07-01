@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-CONTAINER_NAME="${CONTAINER_NAME:-illionj-jekyll-dev}"
+CONTAINER_NAME="${CONTAINER_NAME:-illionj-mkdocs-dev}"
 
 if docker ps -a --format '{{.Names}}' | grep -Fxq "$CONTAINER_NAME"; then
   echo "[local] stopping container: ${CONTAINER_NAME}"
