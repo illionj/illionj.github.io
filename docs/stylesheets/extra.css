@@ -1,0 +1,41 @@
+.wxl-blog-sidebar .wxl-sidebar-posts {
+  border-left: 0.05rem solid var(--md-primary-fg-color);
+  margin-left: 0.2rem;
+  padding-left: 0.4rem;
+}
+
+.wxl-blog-sidebar .wxl-sidebar-group {
+  margin-top: 0.6rem;
+}
+
+.wxl-blog-sidebar .md-nav__link {
+  font-size: 0.72rem;
+  line-height: 1.35;
+  margin-top: 0.25rem;
+}
+
+.wxl-blog-sidebar .md-nav__link--active {
+  color: var(--md-primary-fg-color);
+}
+
+.wxl-category-tag {
+  font-weight: 700;
+}
+
+.wxl-category-index {
+  display: grid;
+  gap: 1rem;
+}
+
+.wxl-category-page h1 {
+  margin-bottom: 0.8rem;
+}
+
+.wxl-category-block h2 {
+  margin: 0 0 0.35rem;
+}
+
+.wxl-category-block ul {
+  margin-bottom: 0;
+  margin-top: 0.35rem;
+}

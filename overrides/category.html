@@ -1,0 +1,44 @@
+{% extends "main.html" %}
+
+{% block site_nav %}{% endblock %}
+
+{% block container %}
+  {% set data = namespace(category_views=[]) %}
+  {% for nav_item in nav.items %}
+    {% if nav_item.children %}
+      {% for child in nav_item.children %}
+        {% if child.title == "分类" and child.children %}
+          {% for item in child.children %}
+            {% if item.url is defined and item.url[:9] == "category/" and item.url != "category/" %}
+              {% set _ = data.category_views.append(item) %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+  <div class="md-content md-content--post" data-md-component="content">
+    {% include "partials/blog-sidebar.html" %}
+    <article class="md-content__inner md-typeset wxl-category-page">
+      <h1>{{ page.title }}</h1>
+      <div class="wxl-category-index">
+        {% for category in data.category_views %}
+          <section class="wxl-category-block">
+            <h2>
+              <a href="{{ category.url | url }}">{{ category.title }}</a>
+            </h2>
+            {% if category.posts %}
+              <ul>
+                {% for post in category.posts %}
+                  <li>
+                    <a href="{{ post.url | url }}">{{ post.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </section>
+        {% endfor %}
+      </div>
+    </article>
+  </div>
+{% endblock %}

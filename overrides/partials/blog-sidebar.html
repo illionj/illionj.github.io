@@ -1,0 +1,112 @@
+{% set is_post = page.categories is defined and page.categories %}
+{% set is_category = page.url is defined and page.url[:9] == "category/" %}
+{% set data = namespace(category_views=[]) %}
+
+{% if is_post and page.parent.posts is defined %}
+  {% set blog_posts = page.parent.posts %}
+{% else %}
+  {% set blog_posts = page.posts | default([]) %}
+{% endif %}
+
+{% if is_category and page.parent.children is defined %}
+  {% for item in page.parent.children %}
+    {% if item.url is defined and item.url[:9] == "category/" and item.url != "category/" %}
+      {% set _ = data.category_views.append(item) %}
+    {% endif %}
+  {% endfor %}
+{% elif is_post and page.parent.views is defined %}
+  {% for item in page.parent.views %}
+    {% if item.url is defined and item.url[:9] == "category/" and item.url != "category/" %}
+      {% set _ = data.category_views.append(item) %}
+    {% endif %}
+  {% endfor %}
+{% elif page.views is defined %}
+  {% for item in page.views %}
+    {% if item.url is defined and item.url[:9] == "category/" and item.url != "category/" %}
+      {% set _ = data.category_views.append(item) %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if is_category and data.category_views | length == 0 %}
+  {% for nav_item in nav.items %}
+    {% if nav_item.children %}
+      {% for child in nav_item.children %}
+        {% if child.title == "分类" and child.children %}
+          {% for item in child.children %}
+            {% if item.url is defined and item.url[:9] == "category/" and item.url != "category/" %}
+              {% set _ = data.category_views.append(item) %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+<div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+  <div class="md-sidebar__scrollwrap">
+    <div class="md-sidebar__inner md-post">
+      <nav class="md-nav md-nav--primary wxl-blog-sidebar" aria-label="笔记导航">
+        {% if is_category %}
+          <ul class="md-nav__list">
+            <li class="md-nav__item md-nav__item--section">
+              <div class="md-post__title">
+                <span class="md-ellipsis">分类</span>
+              </div>
+              <nav class="md-nav">
+                <ul class="md-nav__list">
+                  {% for category in data.category_views %}
+                    {% if category.url is defined and category.url[:9] == "category/" %}
+                      {% set state = namespace(active=false) %}
+                      {% if is_category and page.url == category.url %}
+                        {% set state.active = true %}
+                      {% endif %}
+                      <li class="md-nav__item{% if state.active %} md-nav__item--active{% endif %}">
+                        <a href="{{ category.url | url }}" class="md-nav__link{% if state.active %} md-nav__link--active{% endif %}">
+                          <span class="md-ellipsis">{{ category.title }}</span>
+                        </a>
+                        {% if state.active and category.posts %}
+                          <nav class="md-nav wxl-sidebar-posts" aria-label="{{ category.title }}">
+                            <ul class="md-nav__list">
+                              {% for post in category.posts %}
+                                <li class="md-nav__item">
+                                  <a href="{{ post.url | url }}" class="md-nav__link">
+                                    <span class="md-ellipsis">{{ post.title }}</span>
+                                  </a>
+                                </li>
+                              {% endfor %}
+                            </ul>
+                          </nav>
+                        {% endif %}
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </nav>
+            </li>
+          </ul>
+        {% else %}
+          <ul class="md-nav__list">
+            <li class="md-nav__item md-nav__item--section">
+              <div class="md-post__title">
+                <span class="md-ellipsis">笔记</span>
+              </div>
+              <nav class="md-nav wxl-sidebar-posts">
+                <ul class="md-nav__list">
+                  {% for post in blog_posts %}
+                    <li class="md-nav__item">
+                      <a href="{{ post.url | url }}" class="md-nav__link">
+                        <span class="md-ellipsis">{{ post.title }}</span>
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </nav>
+            </li>
+          </ul>
+        {% endif %}
+      </nav>
+    </div>
+  </div>
+</div>

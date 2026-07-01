@@ -1,4 +1,4 @@
-site_name: 笔记
+site_name: wxl的记录
 site_description: 技术笔记与学习记录
 site_url: https://illionj.github.io/
 repo_url: https://github.com/illionj/illionj.github.io
@@ -10,53 +10,39 @@ use_directory_urls: true
 
 theme:
   name: material
+  custom_dir: overrides
   language: zh
   favicon: favicon.ico
   features:
     - navigation.instant
     - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.sections
     - navigation.indexes
+    - toc.integrate
     - toc.follow
     - search.highlight
     - search.suggest
   palette:
-    - scheme: default
-      primary: indigo
-      accent: teal
-      toggle:
-        icon: material/weather-night
-        name: 切换到深色模式
-    - scheme: slate
-      primary: indigo
-      accent: teal
-      toggle:
-        icon: material/weather-sunny
-        name: 切换到浅色模式
+    scheme: default
+    primary: indigo
+    accent: teal
 
 nav:
-  - 首页: index.md
-  - 分类:
-      - 编程语言:
-          - 概览: categories/programming-languages/index.md
-          - C++:
-              - 概览: categories/programming-languages/cpp/index.md
-              - 3DGS 训练算法说明: categories/programming-languages/cpp/3DGS 训练算法说明.md
-              - autograd: categories/programming-languages/cpp/最终说明.md
-              - 这里写你的笔记标题: categories/programming-languages/cpp/test.md
-              - 这里写你的笔记标题1: categories/programming-languages/cpp/test1.md
-          - CUDA:
-              - 概览: categories/programming-languages/cuda/index.md
-              - 这里写你的笔记标题: categories/programming-languages/cuda/test.md
-      - 异构计算: categories/heterogeneous-computing/index.md
-      - 计算机架构: categories/computer-architecture/index.md
-      - 工具命令: categories/tools/index.md
-      - 语法律师: categories/language-lawyer/index.md
-      - 线性代数: categories/linear-algebra/index.md
-  - 所有笔记: notes/index.md
+  - 笔记:
+      - index.md
+  - 关于: about.md
+  - 分类: category/index.md
+  - tags: tags.md
 
 plugins:
   - search
+  - blog:
+      blog_dir: .
+      post_url_format: "{categories}/{slug}"
+      post_excerpt: required
+  - tags
 
 markdown_extensions:
   - admonition
@@ -83,3 +69,6 @@ extra_javascript:
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
   - https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js
   - javascripts/mermaid.js
+
+extra_css:
+  - stylesheets/extra.css

@@ -1,8 +1,12 @@
 ---
 title: "这里写你的笔记标题"
-date: 2025-05-16     # 可选，用于显示日期
+date: 2025-05-16
+categories:
+  - cuda
+tags:
+  - cuda
 ---
 
 # CUDA 相关文章
 
-
+<!-- more -->

@@ -40,8 +40,8 @@ PIP_INDEX_URL=https://pypi.org/simple FORCE_BUILD=1 ./scripts/serve-local.sh
 
 - `mkdocs.yml`：站点配置、主题配置和导航。
 - `docs/`：发布内容目录。
-- `docs/categories/`：分类页和文章。
-- `docs/notes/`：笔记索引页。
+- `docs/posts/`：博客文章；分类和标签来自文章 front matter。
+- `docs/tags.md`：标签索引页。
 - `.github/workflows/deploy.yml`：推送到 `main` 后构建并发布到 GitHub Pages。
 
 GitHub Pages 需要在仓库设置中选择 `GitHub Actions` 作为发布来源。
