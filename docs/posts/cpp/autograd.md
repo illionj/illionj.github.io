@@ -3,13 +3,15 @@ title: "autograd"
 date:
   created: 2025-05-18
   updated: 2026-05-18
+slug: autograd
 categories:
   - cpp
 tags:
+  - cpp
   - autograd
   - pytorch
   - math
-description: "这篇笔记的简短摘要"
+description: "梳理自动微分中的计算图、前向模式、反向模式和张量场景。"
 ---
 
 我好像对于autograd有了基本了解

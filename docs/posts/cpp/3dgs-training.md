@@ -3,6 +3,7 @@ title: "3DGS 训练算法说明"
 date:
   created: 2025-05-16
   updated: 2026-05-14
+slug: 3dgs-training
 categories:
   - cpp
 tags:
@@ -10,7 +11,7 @@ tags:
   - cpp
   - template
   - stl
-description: "这篇笔记的简短摘要"
+description: "说明 3DGS 训练算法的输入输出、训练流程、图像与 LiDAR 分支和交付产物。"
 ---
 
 # 3DGS 训练算法说明
@@ -442,4 +443,3 @@ flowchart LR
 | 可持续迭代 | 仿真验证结果可反向指导下一轮数据和模型优化 |
 
 整体来看，该训练算法的作用是把真实场景数据转化为可在闭环仿真中复用的 3DGS 传感器模型，为后续相机、LiDAR 和融合传感器的仿真验证提供统一模型基础。
-
