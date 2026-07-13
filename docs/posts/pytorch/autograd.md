@@ -5,11 +5,10 @@ date:
   updated: 2026-05-18
 slug: autograd
 categories:
-  - cpp
-tags:
-  - cpp
-  - autograd
   - pytorch
+tags:
+  - python
+  - autograd
   - math
 description: "梳理自动微分中的计算图、前向模式、反向模式和张量场景。"
 ---
@@ -90,14 +89,14 @@ a = x + y \;\Rightarrow\;
 $$
 
 $$
+\begin{aligned}
 z = a \cdot y \;\Rightarrow\;
-\frac{\partial z}{\partial x}=
+\frac{\partial z}{\partial x}
+&=
 \frac{\partial z}{\partial a} \cdot \frac{\partial a}{\partial x}+
-\frac{\partial z}{\partial y} \cdot \frac{\partial y}{\partial x}
-$$
-
-$$=
-y \cdot 1 + a \cdot 0=y
+\frac{\partial z}{\partial y} \cdot \frac{\partial y}{\partial x} \\
+&= y \cdot 1 + a \cdot 0=y
+\end{aligned}
 $$
 
 这里只用最简单的加乘做例子
@@ -160,10 +159,11 @@ def test_forward():
 ```
 
 可以看到一个节点记录了:
-1.自己的左右叶子节点是谁
-2.自己的操作符是什么
-3.自己的值是什么,
-4.自己导数是什么
+
+1. 自己的左右叶子节点是谁
+2. 自己的操作符是什么
+3. 自己的值是什么,
+4. 自己导数是什么
 
 使用流程就是先定义计算图,接着给叶子节点赋值,然后按照顺序将中间节点逐个执行forward
 forward中进行值计算与导数计算
@@ -387,8 +387,9 @@ def test_backward():
 ```
 
 反向模式的代码也非常简洁
-1.从叶子节点向root节点进行正向求值(因为反向从root开始计算导数的时候需要当前节点的值)
-2.反向将根节点对当前节点的偏导不断传播更新
+
+1. 从叶子节点向root节点进行正向求值(因为反向从root开始计算导数的时候需要当前节点的值)
+2. 反向将根节点对当前节点的偏导不断传播更新
 
 <!-- 
 现在前向和反向的计算规则和一些原理都讲过了
@@ -409,7 +410,8 @@ def test_backward():
 现在要回顾一下现实
 这里就采用pytorch官方教程的例子
 一个通常的计算流程是
-```
+
+```python
 import torch
 
 x = torch.ones(5)  # input tensor
@@ -436,52 +438,51 @@ w和b就是我们需要优化的参数
 也就说说 需要对w11->w53 这十五个变量进行求导
 
 现在只聚焦
-```
+
+```python
 loss = torch.nn.functional.binary_cross_entropy_with_logits(z, y)
 ```
 这里函数的解释详见learn_pytorch.txt
 具体就不展开了
 
-$
+$$
 p= \sigma(z) = \frac{1}{1+e^{-z}}
-$
+$$
 
-
-$
+$$
 L = -\left(y\log p + (1-y)\log(1-p)\right)
-$
+$$
 
-
-$
+$$
 \frac{\partial {L}}{\partial{z}}=\frac{\partial{L}}{\partial{p}} \cdot \frac{\partial{p}}{\partial {z}}
-$
+$$
 
-$
+$$
 \frac{\partial {L}}{\partial {p}}=-(\frac {y}{p} - \frac{1-y}{1-p}) 
-$
+$$
 
-$
+$$
 \frac{\partial {p}}{\partial{z}}=\frac{e^{-z}}{(1+e^{-z})^2}
-$
+$$
 
-$
+$$
 \frac{\partial{L}}{\partial{z}}=-(\frac {y}{p} - \frac{1-y}{1-p}) \cdot \frac{e^{-z}}{(1+e^{-z})^2}=p-y
-$
+$$
 
 这里从形式上可能会产生困惑,因为我没有说明L,z,y的类型
 其中L,z,y都是向量
 
-$
+$$
 p_i=\sigma(\frac{1}{1+e^{-z_i}})
-$
+$$
 
-$
+$$
 \ell_i = -(y_i\log{p_i}+(1-y_i)\log{(1-p_i)})
-$
+$$
 
-$
+$$
 loss=\frac{1}{N}\sum_{i=1}^{N}\ell_i
-$
+$$
 
 只从这个例子中看,其实每个z和y的元素都对应一个独立的标量loss
 最后的总loss采用了python默认添加的reduction,使用的策略就是求平均值
@@ -491,9 +492,10 @@ $
 但是我们最后做反向传播的时候,使用的是总标量,也就说reduction过后的loss进行求导
 
 所以真实的标量loss,对某个z_i的偏导数
-$
+
+$$
 \frac {\partial{L}}{\partial{z_i}}=\frac {1}{N}(p_i-y_i)
-$
+$$
 
 接着按照反向传播的定义
 我们来到的真正关键的节点
@@ -505,109 +507,130 @@ $\frac{\partial L}{\partial w_{ij}}$和$\frac{\partial L}{\partial b_i}$
 因此我们要先知道
 $\frac{\partial z_j}{\partial w_{ij}}$和$\frac{\partial z_j}{\partial b_j}$
 
-$
+$$
 z=xW+b
-$
+$$
+
 并且
-$
+
+$$
 z_j=\sum_{i=1}^{N}x_{i}W_{ij}+b_j
-$
+$$
+
 因此
-$
+
+$$
 \frac{\partial z_j}{\partial w_{ij}}=x_i
-$
-$
+$$
+
+$$
 \frac{\partial z_j}{\partial b_j}=1
-$
+$$
 
 那么
-$
-\frac{\partial L}{\partial w_{ij}}=\frac {\partial{L}}{\partial{z_j}} \cdot \frac{\partial z_j}{\partial w_{ij}}= \frac {x_i}{N}(p_j-y_j) 
-$
 
-$
+$$
+\frac{\partial L}{\partial w_{ij}}=\frac {\partial{L}}{\partial{z_j}} \cdot \frac{\partial z_j}{\partial w_{ij}}= \frac {x_i}{N}(p_j-y_j) 
+$$
+
+$$
 \frac{\partial L}{\partial b_{j}}=\frac {\partial{L}}{\partial{z_j}} \cdot \frac{\partial z_j}{\partial b_{j}}= \frac {1}{N}(p_j-y_j)
-$
+$$
 
 如果只从我们的例子出发,计算到这里即可(因为我们已经拿到了所有变量的梯度)
 
 但是如果当前的例子只是一层,我们需要进一步计算,每一个x_i都是上一层的输出,反向传播时上层也需要梯度的流转
 
 一个想当然的思路(很遗憾是错误的,因为我就犯了这个错)
-$
+
+$$
 \frac {\partial L}{\partial x_i}=\frac {\partial L}{\partial z_i} \cdot \frac{\partial z_i}{\partial x_i}
-$
+$$
+
 正确思路是回到表达式
-$
+
+$$
 z=xW+b
-$
+$$
+
 并且
-$
+
+$$
 z_j=\sum_{i=1}^{N}x_{i}W_{ij}+b_j
-$
+$$
 
 这里能看到一个明显的信号,那就是无论对哪个z_j求值,都需要所有x_i参与(矩阵乘法)
 因此,按照线性映射的特点,我们需要从所有的$\frac {\partial{L}}{\partial{z_j}}$"采集"x_i对L的影响
 
 所以正确的表达式应该是这样:
-$
+
+$$
 \frac {\partial L}{\partial x_i}=\sum_{j=1}^{N}\frac {\partial L}{\partial z_j} \cdot \frac{\partial z_j}{\partial x_i}
-$
+$$
 
 接着再看看 $\frac{\partial z_j}{\partial x_i}$应该如何表示
 
-$
+$$
 \frac{\partial z_j}{\partial x_i}=W_{ij}
-$
+$$
 
 所以
 
-$
+$$
 \frac {\partial L}{\partial x_i}=\sum_{j=1}^{N}\frac {\partial L}{\partial z_j} \cdot \frac{\partial z_j}{\partial x_i}=\sum_{j=1}^{N}\frac {1}{N}(p_j-y_j) \cdot W_{ij}
-$
+$$
 
 这时引入记号,表示loss 对当前层输出的梯度,也就是从后面传回来的梯度
-$
+
+$$
 \delta=\frac {\partial L}{\partial z_j}
-$
+$$
 
 通常也记为
-$
+
+$$
 \delta^{l}=\frac {\partial L}{\partial z^l}
-$
+$$
+
 其中l表示第l层
 $z^l$表示该层的linear output (activation之前)
 
 这时,线性层:
-$
+
+$$
 \frac{\partial L}{\partial w_{ij}}=\frac {\partial{L}}{\partial{z_j}} \cdot \frac{\partial z_j}{\partial w_{ij}}= \frac {x_i}{N}(p_j-y_j) = x_i \delta_j
-$
+$$
 
 输入梯度:
-$
+
+$$
 \frac {\partial L}{\partial x_i}=\sum_{j=1}^{N}\delta_{j}W_{ij}
-$
+$$
 
 变成矩阵形式
-$
+
+$$
 \frac {\partial L}{\partial x}=\delta W^{T}
-$
+$$
 
 转置出现了
-```
+
+```python
 grad_input = grad_output @ W.T
 ```
 
 一种非常奇妙的对偶结构也出现了
 forward
-$
+
+$$
 z=xW
-$
+$$
 
 backward
-$
+
+$$
 dx=\delta W^{T}
-$
+$$
 
 forward 的 Jacobian：J
 backward 做的是：$J^{T}v$
