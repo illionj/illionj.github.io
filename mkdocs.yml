@@ -83,7 +83,7 @@ plugins:
       pagination_format: "~2~"
       pagination_if_single_page: false
       pagination_keep_content: false
-      draft: false
+      draft: true
       draft_on_serve: true
       draft_if_future_date: false
   - tags:

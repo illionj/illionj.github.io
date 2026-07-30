@@ -3,6 +3,12 @@
 {% if "\u003ch1" not in page.content %}
   <h1>{{ page.title | d(config.site_name, true)}}</h1>
 {% endif %}
+{% if page.meta and page.meta.draft %}
+  <div class="admonition warning">
+    <p class="admonition-title">未整理笔记</p>
+    <p>本文尚未整理排版，内容可能较为零散，仅供有需要的读者参考。</p>
+  </div>
+{% endif %}
 {{ page.content }}
 {% include "partials/source-file.html" %}
 {% include "partials/feedback.html" %}
