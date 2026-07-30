@@ -1,0 +1,229 @@
+---
+title: "牛顿迭代在 `continuousClosest` 中的具体应用"
+date:
+  created: 2026-02-15
+  updated: 2026-04-05
+slug: newton-method-continuous-closest
+categories:
+  - Autonomous Driving
+tags:
+  - Autonomous Driving
+  - Mathematics
+  - Newton Method
+  - Path Planning
+description: "牛顿迭代在 continuousClosest 中的应用"
+---
+
+# 牛顿迭代在 `continuousClosest` 中的具体应用
+
+
+## 1. 问题定义
+
+给定车辆当前坐标 $(x_0,y_0)$, 以及样条曲线  
+
+$$
+\bigl(x(s),y(s)\bigr),\qquad s\in[0,s_{\max}],
+$$
+
+目标是找到 **最近点**(正交投影)  
+
+$$
+s^\ast=\arg\min_{s\in[0,s_{\max}]} F(s),\quad 
+F(s)=\tfrac12\bigl[(x(s)-x_0)^2+(y(s)-y_0)^2\bigr].
+$$
+
+<!-- more -->
+
+## 2. 牛顿迭代基本公式
+
+对一元函数 $G(s)=F'(s)=0$ 使用牛顿迭代:  
+
+$$
+s_{k+1}=s_k-\frac{G(s_k)}{G'(s_k)}.
+$$
+
+### 2.1 在代码中的具体表达式
+
+- 位置向量差  
+
+    $$
+    \mathbf r(s)=(x(s)-x_0,\;y(s)-y_0).
+    $$
+
+- 切向量  
+
+    $$
+    \mathbf t(s)=(x'(s),\;y'(s)).
+    $$
+
+- 二阶导  
+
+    $$
+    \mathbf t'(s)=(x''(s),\;y''(s)).
+    $$
+
+- **一阶导数**  
+
+    $$
+    G(s)=\mathbf r(s)\cdot\mathbf t(s)
+         =(x-x_0)\,x'(s)+(y-y_0)\,y'(s).
+    $$
+
+- **二阶导数**  
+
+    $$
+    G'(s)=\|\mathbf t(s)\|^2+\mathbf r(s)\cdot\mathbf t'(s).
+    $$
+
+## 1. 基本几何元素
+
+| 记号                                                                                  | 含义          | 几何解释                                       |
+| ----------------------------------------------------------------------------------- | ----------- | ------------------------------------------ |
+| $P=(x_0,y_0)$                                                                       | 给定的**外部点**  | “想要投影/最近距离”的那个点                            |
+| $\displaystyle \boldsymbol\gamma(s)=\bigl(x(s),y(s)\bigr)$                          | 曲线的**参数方程** | 你用三次样条或别的方式得到的平滑轨迹；参数 $s$ 可以是弧长，也可以是任意单调参数 |
+| $\displaystyle \mathbf t(s)=\boldsymbol\gamma'(s)=\bigl(x'(s),y'(s)\bigr)$          | **切向量**     | 曲线在 $\gamma(s)$ 处的瞬时方向                     |
+| $\displaystyle \mathbf t'(s)=\boldsymbol\gamma''(s)=\bigl(x''(s),y''(s)\bigr)$      | **二阶导**     | 切向量随 $s$ 变化的速率；与曲率有关                       |
+| $\displaystyle \mathbf r(s)=\boldsymbol\gamma(s)-P=\bigl(x(s)-x_0,\;y(s)-y_0\bigr)$ | **位置向量差**   | 从外点 $P$ 指向曲线上点 $\gamma(s)$ 的向量             |
+
+> ➤ **来源**：
+>
+> * $\mathbf t(s)$ 与 $\mathbf t'(s)$ 来自对曲线方程 $\boldsymbol\gamma(s)$ 求导；
+> * $\mathbf r(s)$ 是把曲线上点与外点做“向量减法”。
+
+## 2. 为什么要构造 $G(s)=\mathbf r(s)\!\cdot\!\mathbf t(s)$
+
+* **目标**：找到一个 $s^\ast$ 使 $\mathbf r(s^\ast)$ 与 $\mathbf t(s^\ast)$ **正交**，即
+
+    $$
+      \mathbf r(s^\ast)\cdot\mathbf t(s^\ast) = 0.
+    $$
+
+  这正是 **正交投影**（亦即连续曲线最近点）条件。
+
+* **把它写成函数**
+
+    $$
+      G(s)=\bigl(x(s)-x_0\bigr)x'(s)\;+\;\bigl(y(s)-y_0\bigr)y'(s)
+    $$
+
+  令 $G(s)=0$ 就是要求正交条件。
+
+对应到代码:
+
+```cpp
+double rx   = xs - x0;
+double ry   = ys - y0;
+double G    = rx*dxs + ry*dys;                // dot(r, t)
+double Gp   = dxs*dxs + dys*dys               // |t|^2
+            + rx*ddxs + ry*ddys;              // r·t'
+```
+
+---
+
+## 3. 函数结构与关键步骤
+
+| 步骤 | 代码行 | 说明 |
+| ---- | ------ | ---- |
+| **粗搜索初值** | `for (i=0; i<=coarse_N; ++i)` | 在 256 个均匀样本上暴力查最近弧长, 保障初值进入收敛域 |
+| **安全边界** | `safety = 1e-4*s_max` | 避免迭代落到端点, 防止导数不全或越界 |
+| **迭代主循环** | `for (it=0; it<max_iter; ++it)` | 计算 $G,G'$ 并更新 $s$ |
+| **奇异斜率保护** | `if (grad2 < 1e-8)` | 若 $\|\mathbf t\|^2$ 太小, curve 几乎静止, 改用邻域对比法 |
+| **步长限制** | `delta = clamp(-G/Gp,-0.1,0.1)` | `step_limit=0.1` 防止一步跳太远 |
+| **收敛判定** | `fabs(G)<eps_G` _或_ `fabs(s_new-s)<eps_s` | 双重阈值保证稳定退出 |
+
+---
+
+## 4. 细节剖析
+
+### 4.1 收敛半径的来源
+
+牛顿法局部二次收敛, 但仅在  
+
+$$
+|s_0-s^\ast|\le\delta
+$$
+
+时成立。`coarse_N` 粗搜索通过 _全局最近_ 粗定位将初值拉进该半径。
+
+### 4.2 步长截断
+
+实际工程数据常噪声大, $G'(s)$ 可能非常小, 直接使用  
+
+$$
+\Delta s=-\frac{G}{G'}
+$$
+
+会导致数值炸裂。`std::clamp` 将 $\Delta s$ 控制在 $\pm0.1$, 等价于阻尼牛顿:
+
+$$
+s_{k+1}=s_k+\alpha_k\Delta s_{\text{newton}},\;|\alpha_k|\le 0.1.
+$$
+
+### 4.3 横向误差公式
+
+计算完最近点后, 横向误差(带符号)为  
+
+$$
+e_y=\frac{-(x-x_0)\,y'(s)+(y-y_0)\,x'(s)}
+         {\|\mathbf t(s)\|}.
+$$
+
+代码:
+
+```cpp
+st.lat_err = (-dx*dys + dy*dxs) / (tang_mag + 1e-12);
+```
+
+---
+
+## 5. 收敛与复杂度分析
+
+- **时间复杂度**  
+  - 粗搜索: $O(N_{\text{coarse}})$, 典型 256  
+  - 每次迭代: 常数开销, 最多 `max_iter`(默认 10)  
+  故整体 $O(N_{\text{coarse}}+k)$
+- **收敛速度**  
+
+    - 当导数正常时, 二次收敛:  
+
+        $$
+        |s_{k+1}-s^\ast|\le C|s_k-s^\ast|^2.
+        $$
+
+    - 若切向量过小, 自动降级为邻域搜索, 保证鲁棒但仅线性收敛。
+
+---
+
+## 6. 典型调参建议
+
+| 参数 | 作用 | 默认 | 调整建议 |
+| ---- | ---- | ---- | -------- |
+| `coarse_N` | 初值网格细度 | 256 | 曲线长短可适当倍增 |
+| `step_limit` | 最大牛顿步 | 0.1 | 若曲线较平坦可放大到 0.2 |
+| `eps_G` | $G$ 阈值 | 1e-10 | 与测量噪声同数量级 |
+| `eps_s` | 弧长步阈值 | 1e-10 | 可取 `1e-8*s_max` |
+| `max_iter` | 最大迭代数 | 10 | 极端曲线可加到 20 |
+
+---
+
+## 7. 与纯理论牛顿法的差异
+
+| 纯理论 | 该实现 |
+| ------ | ------- |
+| 步长无阻尼 | 限幅阻尼, 防发散 |
+| 不检测 $\|\mathbf t\|$ | 极小切向量转邻域 Brute force |
+| 单收敛准则 | 双阈值 + 最大迭代 |
+| 初值由用户给定 | 自动网格搜索 |
+
+这些改进牺牲了部分“纯”二次收敛速度, 但极大提升了 **实用稳定性**。
+
+---
+
+## 8. 结语
+
+`continuousClosest` 将传统离散搜索升级为 **连续牛顿迭代**:
+
+1. 在样条曲线上快速定位最近点。  
+2. 输出精确横向误差, 供上层 pure_pursuit 控制使用。
+
+得益于 **二次收敛 + 工程级保护策略**, 即便在稀疏曲线或尖锐拐角场景下, 仍能稳定、精准地服务于车辆控制系统。

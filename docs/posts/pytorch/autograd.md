@@ -1,19 +1,31 @@
 ---
 title: "autograd"
 date:
-  created: 2025-05-18
-  updated: 2026-05-18
-slug: autograd
+  created: 2026-07-30
+  updated: 2026-07-30
+slug: pytorch-autograd
 categories:
-  - pytorch
+  - PyTorch
 tags:
-  - python
-  - autograd
-  - math
+  - PyTorch
+  - Autograd
+  - Automatic Differentiation
+  - Mathematics
 description: "梳理自动微分中的计算图、前向模式、反向模式和张量场景。"
+draft: true
 ---
 
 我好像对于autograd有了基本了解
+
+真传一句话,假传万卷书:
+按照我的理解,前向与反向从工程角度看就一个区别
+
+前向:从叶子节点出发,对每个节点计算指定叶子节点的偏导
+
+反向:从根节点出发,对每个计算节点计算根节点对当前节点的偏导
+
+
+
 首先 分为前向模式和反向模式
 所以先讲前向模式
 
@@ -68,11 +80,9 @@ $$
 已知叶子节点的偏导后，可以沿计算图向前传播。对任意节点 $v$，若其依赖于输入 $u_1, u_2, \dots$，则有：
 
 $$
-\frac{\partial v}{\partial x}=
-\sum_i
-\frac{\partial v}{\partial u_i}
-\cdot
-\frac{\partial u_i}{\partial x}
+\frac{\partial v}{\partial x}
+= \sum_i \frac{\partial v}{\partial u_i}
+\cdot \frac{\partial u_i}{\partial x}
 $$
 
 这就是链式法则在计算图中的形式(稍后我会解释为什么是这个样子)。
@@ -81,21 +91,26 @@ $$
 应用到具体节点：
 
 $$
-a = x + y \;\Rightarrow\;
-\frac{\partial a}{\partial x}=
-\frac{\partial x}{\partial x} +
-\frac{\partial y}{\partial x}=
-1 + 0 = 1
+\begin{aligned}
+a &= x + y, \\
+\frac{\partial a}{\partial x}
+&= \frac{\partial x}{\partial x}
++ \frac{\partial y}{\partial x}
+= 1 + 0
+= 1
+\end{aligned}
 $$
 
 $$
 \begin{aligned}
-z = a \cdot y \;\Rightarrow\;
+z &= a \cdot y, \\
 \frac{\partial z}{\partial x}
-&=
-\frac{\partial z}{\partial a} \cdot \frac{\partial a}{\partial x}+
-\frac{\partial z}{\partial y} \cdot \frac{\partial y}{\partial x} \\
-&= y \cdot 1 + a \cdot 0=y
+&= \frac{\partial z}{\partial a}
+\cdot \frac{\partial a}{\partial x}
++ \frac{\partial z}{\partial y}
+\cdot \frac{\partial y}{\partial x} \\
+&= y \cdot 1 + a \cdot 0 \\
+&= y
 \end{aligned}
 $$
 
@@ -183,12 +198,16 @@ forward中进行值计算与导数计算
 
 当我们再次审视计算图
 前向模式的"根本原理"是只要知道子节点的导数,我们就是可以计算父节点的导数
+
 $$
-z = a \cdot y \Rightarrow
+\begin{aligned}
+z &= a \cdot y, \\
 \frac{\partial z}{\partial x}
-= \frac{\partial a}{\partial x} \cdot y + a \cdot \frac{\partial y}{\partial x}
-= y + (x + y)\cdot 0
-= y
+&= \frac{\partial a}{\partial x} \cdot y
++ a \cdot \frac{\partial y}{\partial x} \\
+&= y + (x + y) \cdot 0 \\
+&= y
+\end{aligned}
 $$
 
 在这个过程中,我们知道a和y,所以可以计算出z
@@ -202,36 +221,47 @@ $$
 这个问题有个非常简单的答案:我们能对谁求导,就对谁求导
 在$z = a \cdot y$这个场景中,我们能做的就是对a和y求导而已,因为只有它们两个变量的形式结构,数值是明确
 因此我们可以得到
+
 $$
-z = a \cdot y \Rightarrow
 \begin{aligned}
+z &= a \cdot y, \\
 \frac{\partial z}{\partial a}
-&= \frac{\partial z}{\partial z} \cdot \frac{\partial z}{\partial a} = y \\
+&= \frac{\partial z}{\partial z}
+\cdot \frac{\partial z}{\partial a}
+= y, \\
 \frac{\partial z}{\partial y}
-&= \frac{\partial z}{\partial z} \cdot \frac{\partial z}{\partial y} = a
+&= \frac{\partial z}{\partial z}
+\cdot \frac{\partial z}{\partial y}
+= a
 \end{aligned}
 $$
 
 伟大的递归思想开始熠熠生辉
-$z = a \cdot y $ 可以这么算
+$z = a \cdot y$ 可以这么算
 
-$a = x + y $ 这有什么不同,只是再来一遍而已
+$a = x + y$ 这有什么不同,只是再来一遍而已
+
 $$
-a =  x + y  \Rightarrow
 \begin{aligned}
+a &= x + y, \\
 \frac{\partial a}{\partial x}
-&= \frac{\partial a}{\partial a} \cdot \frac{\partial a}{\partial x} = 1 \\
+&= \frac{\partial a}{\partial a}
+\cdot \frac{\partial a}{\partial x}
+= 1, \\
 \frac{\partial a}{\partial y}
-&= \frac{\partial a}{\partial a} \cdot \frac{\partial a}{\partial y} = 1
+&= \frac{\partial a}{\partial a}
+\cdot \frac{\partial a}{\partial y}
+= 1
 \end{aligned}
 $$
 
 链式法则告诉我们
+
 $$
-\begin{aligned}
 \frac{\partial z}{\partial x}
-&= \frac{\partial z}{\partial z} \cdot \frac{\partial z}{\partial a}  \cdot \frac{\partial a}{\partial x} \\
-\end{aligned}
+= \frac{\partial z}{\partial z}
+\cdot \frac{\partial z}{\partial a}
+\cdot \frac{\partial a}{\partial x}
 $$
 
 这中间的是三个偏导数都是被我们计算出来的,所以我们简单相乘就能得到结果
@@ -239,17 +269,20 @@ $$
 y在两条链路都有涉及
 
 $$
-\begin{aligned}
 \frac{\partial z}{\partial y}
-&= \frac{\partial z}{\partial z} \cdot \frac{\partial z}{\partial a}  \cdot \frac{\partial a}{\partial y} = y\\
-\end{aligned}
+= \frac{\partial z}{\partial z}
+\cdot \frac{\partial z}{\partial a}
+\cdot \frac{\partial a}{\partial y}
+= y
 $$
+
 别忘了还有一部分
+
 $$
-\begin{aligned}
 \frac{\partial z}{\partial y}
-&= \frac{\partial z}{\partial z} \cdot \frac{\partial z}{\partial y} =a
-\end{aligned}
+= \frac{\partial z}{\partial z}
+\cdot \frac{\partial z}{\partial y}
+= a
 $$
 
 加一下?
@@ -275,8 +308,8 @@ $$
 在 $\mathbb{R}^n$ 中，任意线性映射 $L$ 都可以写成：
 
 $$
-L(\Delta u)=
-\sum_{i=1}^n a_i \, \Delta u_i
+L(\Delta u)
+= \sum_{i=1}^n a_i \, \Delta u_i
 $$
 
 这些系数 $a_i$ 就是偏导数：
@@ -289,10 +322,8 @@ $$
 
 $$
 \Delta v
-\approx
-\sum_{i=1}^n
-\frac{\partial v}{\partial u_i}
-\, \Delta u_i
+\approx \sum_{i=1}^n
+\frac{\partial v}{\partial u_i} \, \Delta u_i
 $$
 
 
@@ -313,10 +344,8 @@ $$
 
 $$
 \frac{\partial v}{\partial x}
-= \sum_i
-\frac{\partial v}{\partial u_i}
-\cdot
-\frac{\partial u_i}{\partial x}
+= \sum_i \frac{\partial v}{\partial u_i}
+\cdot \frac{\partial u_i}{\partial x}
 $$
 
 每条边：一个系数（局部导数）
@@ -446,42 +475,52 @@ loss = torch.nn.functional.binary_cross_entropy_with_logits(z, y)
 具体就不展开了
 
 $$
-p= \sigma(z) = \frac{1}{1+e^{-z}}
+p = \sigma(z) = \frac{1}{1 + e^{-z}}
 $$
 
 $$
-L = -\left(y\log p + (1-y)\log(1-p)\right)
+L = -\left(y \log p + (1 - y) \log(1 - p)\right)
 $$
 
 $$
-\frac{\partial {L}}{\partial{z}}=\frac{\partial{L}}{\partial{p}} \cdot \frac{\partial{p}}{\partial {z}}
+\frac{\partial L}{\partial z}
+= \frac{\partial L}{\partial p}
+\cdot \frac{\partial p}{\partial z}
 $$
 
 $$
-\frac{\partial {L}}{\partial {p}}=-(\frac {y}{p} - \frac{1-y}{1-p}) 
+\frac{\partial L}{\partial p}
+= -\left(\frac{y}{p} - \frac{1 - y}{1 - p}\right)
 $$
 
 $$
-\frac{\partial {p}}{\partial{z}}=\frac{e^{-z}}{(1+e^{-z})^2}
+\frac{\partial p}{\partial z}
+= \frac{e^{-z}}{\left(1 + e^{-z}\right)^2}
 $$
 
 $$
-\frac{\partial{L}}{\partial{z}}=-(\frac {y}{p} - \frac{1-y}{1-p}) \cdot \frac{e^{-z}}{(1+e^{-z})^2}=p-y
+\begin{aligned}
+\frac{\partial L}{\partial z}
+&= -\left(\frac{y}{p} - \frac{1 - y}{1 - p}\right)
+\cdot \frac{e^{-z}}{\left(1 + e^{-z}\right)^2} \\
+&= p - y
+\end{aligned}
 $$
 
 这里从形式上可能会产生困惑,因为我没有说明L,z,y的类型
 其中L,z,y都是向量
 
 $$
-p_i=\sigma(\frac{1}{1+e^{-z_i}})
+p_i = \sigma\left(\frac{1}{1 + e^{-z_i}}\right)
 $$
 
 $$
-\ell_i = -(y_i\log{p_i}+(1-y_i)\log{(1-p_i)})
+\ell_i
+= -\left(y_i \log p_i + (1 - y_i) \log(1 - p_i)\right)
 $$
 
 $$
-loss=\frac{1}{N}\sum_{i=1}^{N}\ell_i
+loss = \frac{1}{N} \sum_{i=1}^{N} \ell_i
 $$
 
 只从这个例子中看,其实每个z和y的元素都对应一个独立的标量loss
@@ -494,7 +533,8 @@ $$
 所以真实的标量loss,对某个z_i的偏导数
 
 $$
-\frac {\partial{L}}{\partial{z_i}}=\frac {1}{N}(p_i-y_i)
+\frac{\partial L}{\partial z_i}
+= \frac{1}{N} \left(p_i - y_i\right)
 $$
 
 接着按照反向传播的定义
@@ -508,33 +548,43 @@ $\frac{\partial L}{\partial w_{ij}}$和$\frac{\partial L}{\partial b_i}$
 $\frac{\partial z_j}{\partial w_{ij}}$和$\frac{\partial z_j}{\partial b_j}$
 
 $$
-z=xW+b
+z = xW + b
 $$
 
 并且
 
 $$
-z_j=\sum_{i=1}^{N}x_{i}W_{ij}+b_j
+z_j = \sum_{i=1}^{N} x_i W_{ij} + b_j
 $$
 
 因此
 
 $$
-\frac{\partial z_j}{\partial w_{ij}}=x_i
+\frac{\partial z_j}{\partial w_{ij}} = x_i
 $$
 
 $$
-\frac{\partial z_j}{\partial b_j}=1
+\frac{\partial z_j}{\partial b_j} = 1
 $$
 
 那么
 
 $$
-\frac{\partial L}{\partial w_{ij}}=\frac {\partial{L}}{\partial{z_j}} \cdot \frac{\partial z_j}{\partial w_{ij}}= \frac {x_i}{N}(p_j-y_j) 
+\begin{aligned}
+\frac{\partial L}{\partial w_{ij}}
+&= \frac{\partial L}{\partial z_j}
+\cdot \frac{\partial z_j}{\partial w_{ij}} \\
+&= \frac{x_i}{N} \left(p_j - y_j\right)
+\end{aligned}
 $$
 
 $$
-\frac{\partial L}{\partial b_{j}}=\frac {\partial{L}}{\partial{z_j}} \cdot \frac{\partial z_j}{\partial b_{j}}= \frac {1}{N}(p_j-y_j)
+\begin{aligned}
+\frac{\partial L}{\partial b_j}
+&= \frac{\partial L}{\partial z_j}
+\cdot \frac{\partial z_j}{\partial b_j} \\
+&= \frac{1}{N} \left(p_j - y_j\right)
+\end{aligned}
 $$
 
 如果只从我们的例子出发,计算到这里即可(因为我们已经拿到了所有变量的梯度)
@@ -544,52 +594,64 @@ $$
 一个想当然的思路(很遗憾是错误的,因为我就犯了这个错)
 
 $$
-\frac {\partial L}{\partial x_i}=\frac {\partial L}{\partial z_i} \cdot \frac{\partial z_i}{\partial x_i}
+\frac{\partial L}{\partial x_i}
+= \frac{\partial L}{\partial z_i}
+\cdot \frac{\partial z_i}{\partial x_i}
 $$
 
 正确思路是回到表达式
 
 $$
-z=xW+b
+z = xW + b
 $$
 
 并且
 
 $$
-z_j=\sum_{i=1}^{N}x_{i}W_{ij}+b_j
+z_j = \sum_{i=1}^{N} x_i W_{ij} + b_j
 $$
 
 这里能看到一个明显的信号,那就是无论对哪个z_j求值,都需要所有x_i参与(矩阵乘法)
-因此,按照线性映射的特点,我们需要从所有的$\frac {\partial{L}}{\partial{z_j}}$"采集"x_i对L的影响
+因此,按照线性映射的特点,我们需要从所有的$\frac{\partial L}{\partial z_j}$"采集"x_i对L的影响
 
 所以正确的表达式应该是这样:
 
 $$
-\frac {\partial L}{\partial x_i}=\sum_{j=1}^{N}\frac {\partial L}{\partial z_j} \cdot \frac{\partial z_j}{\partial x_i}
+\frac{\partial L}{\partial x_i}
+= \sum_{j=1}^{N}
+\frac{\partial L}{\partial z_j}
+\cdot \frac{\partial z_j}{\partial x_i}
 $$
 
 接着再看看 $\frac{\partial z_j}{\partial x_i}$应该如何表示
 
 $$
-\frac{\partial z_j}{\partial x_i}=W_{ij}
+\frac{\partial z_j}{\partial x_i} = W_{ij}
 $$
 
 所以
 
 $$
-\frac {\partial L}{\partial x_i}=\sum_{j=1}^{N}\frac {\partial L}{\partial z_j} \cdot \frac{\partial z_j}{\partial x_i}=\sum_{j=1}^{N}\frac {1}{N}(p_j-y_j) \cdot W_{ij}
+\begin{aligned}
+\frac{\partial L}{\partial x_i}
+&= \sum_{j=1}^{N}
+\frac{\partial L}{\partial z_j}
+\cdot \frac{\partial z_j}{\partial x_i} \\
+&= \sum_{j=1}^{N}
+\frac{1}{N} \left(p_j - y_j\right) \cdot W_{ij}
+\end{aligned}
 $$
 
 这时引入记号,表示loss 对当前层输出的梯度,也就是从后面传回来的梯度
 
 $$
-\delta=\frac {\partial L}{\partial z_j}
+\delta = \frac{\partial L}{\partial z_j}
 $$
 
 通常也记为
 
 $$
-\delta^{l}=\frac {\partial L}{\partial z^l}
+\delta^l = \frac{\partial L}{\partial z^l}
 $$
 
 其中l表示第l层
@@ -598,19 +660,26 @@ $z^l$表示该层的linear output (activation之前)
 这时,线性层:
 
 $$
-\frac{\partial L}{\partial w_{ij}}=\frac {\partial{L}}{\partial{z_j}} \cdot \frac{\partial z_j}{\partial w_{ij}}= \frac {x_i}{N}(p_j-y_j) = x_i \delta_j
+\begin{aligned}
+\frac{\partial L}{\partial w_{ij}}
+&= \frac{\partial L}{\partial z_j}
+\cdot \frac{\partial z_j}{\partial w_{ij}} \\
+&= \frac{x_i}{N} \left(p_j - y_j\right) \\
+&= x_i \delta_j
+\end{aligned}
 $$
 
 输入梯度:
 
 $$
-\frac {\partial L}{\partial x_i}=\sum_{j=1}^{N}\delta_{j}W_{ij}
+\frac{\partial L}{\partial x_i}
+= \sum_{j=1}^{N} \delta_j W_{ij}
 $$
 
 变成矩阵形式
 
 $$
-\frac {\partial L}{\partial x}=\delta W^{T}
+\frac{\partial L}{\partial x} = \delta W^T
 $$
 
 转置出现了
@@ -623,13 +692,13 @@ grad_input = grad_output @ W.T
 forward
 
 $$
-z=xW
+z = xW
 $$
 
 backward
 
 $$
-dx=\delta W^{T}
+dx = \delta W^T
 $$
 
 forward 的 Jacobian：J
