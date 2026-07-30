@@ -13,6 +13,8 @@ description: "勒让德变换学习笔记"
 draft: true
 ---
 
+# 勒让德变换 Legendre transformation
+
 <!-- more -->
 
 勒让德变换

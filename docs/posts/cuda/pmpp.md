@@ -1,8 +1,8 @@
 ---
-title: "PMPP"
+title: "大规模并行处理器程序设计 Programming Massively Parallel Processors: A Hands-on Approach"
 date:
-  created: 2024-12-15
-  updated: 2025-02-16
+  created: 2026-03-30
+  updated: 2026-05-30
 slug: pmpp-notes
 categories:
   - CUDA
@@ -12,6 +12,8 @@ tags:
 description: "PMPP 学习笔记"
 draft: true
 ---
+
+# 大规模并行处理器程序设计 Programming Massively Parallel Processors: A Hands-on Approach
 
 <!-- more -->
 

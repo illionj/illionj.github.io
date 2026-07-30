@@ -15,6 +15,8 @@ description: "梳理自动微分中的计算图、前向模式、反向模式和
 draft: true
 ---
 
+# autograd
+
 我好像对于autograd有了基本了解
 
 真传一句话,假传万卷书:

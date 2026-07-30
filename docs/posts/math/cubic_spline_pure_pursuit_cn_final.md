@@ -13,6 +13,8 @@ tags:
 description: "样条插值"
 ---
 
+# cubic_spline和pure_pursuit
+
 ## 0 白话解析
 
 * 原始中线是散点,散点是没法准确求导的,而且性质也很差,直道稀疏弯道稠密

@@ -14,6 +14,8 @@ description: "The Alchemy of Finance 学习笔记"
 draft: true
 ---
 
+# The Alchemy of Finance 笔记
+
 <!-- more -->
 
 to their own devices

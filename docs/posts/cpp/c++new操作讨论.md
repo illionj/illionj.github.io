@@ -13,6 +13,8 @@ description: "C++ new 操作学习笔记"
 draft: true
 ---
 
+# C++ new 操作讨论
+
 <!-- more -->
 
 c++ 中的new express有哪些?
