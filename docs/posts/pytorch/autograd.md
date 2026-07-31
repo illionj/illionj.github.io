@@ -1,8 +1,8 @@
 ---
 title: "autograd"
 date:
-  created: 2026-07-30
-  updated: 2026-07-30
+  created: 2026-05-20
+  updated: 2026-05-20
 slug: pytorch-autograd
 categories:
   - PyTorch

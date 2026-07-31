@@ -1,8 +1,8 @@
 ---
 title: "四元数理解"
 date:
-  created: 2026-05-31
-  updated: 2026-07-12
+  created: 2026-04-29
+  updated: 2026-04-29
 slug: quaternion
 categories:
   - Mathematics
